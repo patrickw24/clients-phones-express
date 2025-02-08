@@ -10,22 +10,22 @@ export const clientGet = async (req, res)=>{
 
 export const clientPost = async (req, res) =>{
 
-    const sql = 'insert into clients (name, email) values ($1,$2)'
+    const sql = 'insert into clients (name, email) values ($1 , $2)'
     const tmp = req.body
     const arr = [tmp.name, tmp.email]
 
-    const results = await db.query(sql)
+    const results = await db.query(sql,arr)
 
-    res.json({message: "Client Created"})
+    res.status(200).json({message: "Client Created"})
 }
 
 export const clientPut = async (req,res) =>{
 
-    const id_client = req.params.id
+    const id = req.params.id
     const tmp = req.body
-    const arr = [tmp.name, tmp.email, id_client]
+    const arr = [tmp.name, tmp.email, id]
 
-    const sql = 'update clients set name= $1, email= $2 where id_client= $3'
+    const sql = 'update clients set name= $1, email= $2 where id= $3'
 
     const results = await db.query(sql, arr)
 
@@ -35,9 +35,9 @@ export const clientPut = async (req,res) =>{
 
 export const clientDelete = async (req,res)=>{
 
-    const id_client= req.params.id
-    const sql= 'delete from clients where id_client=$1'
-    const arr= [id_client]
+    const id= req.params.id
+    const sql= 'delete from clients where id=$1'
+    const arr= [id]
 
     const results = await db.query(sql, arr)
     res.json({message: "Client Deleted"})
