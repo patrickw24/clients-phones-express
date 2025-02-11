@@ -10,13 +10,31 @@ export const clientGet = async (req, res)=>{
 
 export const clientPost = async (req, res) =>{
 
-    const sql = 'insert into clients (name, email) values ($1 , $2)'
     const tmp = req.body
-    const arr = [tmp.name, tmp.email]
 
-    const results = await db.query(sql,arr)
+    if(!tmp.name){
+        res.status(200).json({message:"Field: Name is empty"})
+    }
 
-    res.status(200).json({message: "Client Created"})
+    if(!tmp.email){
+        res.status(200).json({message:"Field: Email is empty"})
+    }
+
+
+    try{
+        const sql = 'insert into clients (name, email) values ($1 , $2)'
+    
+        const arr = [tmp.name, tmp.email]
+    
+        const results = await db.query(sql,arr)
+    
+        res.status(200).json({message: "Client Created"})
+        return
+    }catch(err){
+        res.status(300).json({message: err})
+        return
+    }
+   
 }
 
 export const clientPut = async (req,res) =>{
